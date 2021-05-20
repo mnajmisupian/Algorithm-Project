@@ -36,7 +36,7 @@ The details of the courier companies and their delivery hubs are given in Table 
 | Customer 1 | Rawang (3.3615395462207878,101.56318183511695) | Bukit Jelutong (3.1000170516638885,101.53071480907951) |
 | Customer 2 | Subang Jaya (3.049398375759954,101.58546611160301) | Puncak Alam (3.227994355250716,101.42730357605375) |
 | Customer 3 | Ampang (3.141855957281073,101.76158583424586) | Cyberjaya (2.9188704151716256,101.65251821655471) |
-							Table 2: Example customer delivery requests.
+				Table 2: Example customer delivery requests.
 
 - Guide 1: you can use Python Geocoding Toolbox
 - Guide 2: you should use Google Distance Matrix API
