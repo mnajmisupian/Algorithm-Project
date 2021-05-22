@@ -14,19 +14,19 @@ def jnt(first, second, third):
     mainParsed0 = htmlParsed0.find("div", attrs={"class" : "odd field-item"})
     mainP0 = mainParsed0.find_all("p")
 
-    # url1 = Request(second, headers={"User-Agent" : "Mozilla/5.0"})
-    # pageOpen1 = urlopen(url1)
-    # pageHtml1 = pageOpen1.read().decode("utf-8")
-    # htmlParsed1 = BeautifulSoup(pageHtml1,"html.parser")
-    # mainParsed1 = htmlParsed1.find("div", attrs={"class" : "td-post-content tagdiv-type"})
-    # mainP1 = mainParsed1.find_all("p")
+    url1 = Request(second, headers={"User-Agent" : "Mozilla/5.0"})
+    pageOpen1 = urlopen(url1)
+    pageHtml1 = pageOpen1.read().decode("utf-8")
+    htmlParsed1 = BeautifulSoup(pageHtml1,"html.parser")
+    mainParsed1 = htmlParsed1.find("div", attrs={"class" : "field-item even", "property" : "content:encoded"})
+    mainP1 = mainParsed1.find_all("p")
 
-    # url2 = Request(third, headers={"User-Agent" : "Mozilla/5.0"})
-    # pageOpen2 = urlopen(url2)
-    # pageHtml2 = pageOpen2.read().decode("utf-8")
-    # htmlParsed2 = BeautifulSoup(pageHtml2,"html.parser")
-    # mainParsed2 = htmlParsed2.find("div", attrs={"class" : "entry-content css-19a2kph"})
-    # mainP2 = mainParsed2.find_all("p")
+    url2 = Request(third, headers={"User-Agent" : "Mozilla/5.0"})
+    pageOpen2 = urlopen(url2)
+    pageHtml2 = pageOpen2.read().decode("utf-8")
+    htmlParsed2 = BeautifulSoup(pageHtml2,"html.parser")
+    mainParsed2 = htmlParsed2.find("div", attrs={"class" : "entry-content css-19a2kph"})
+    mainP2 = mainParsed2.find_all("p")
     
     pList = []                                                                              #change all <p> tag to string and replace all unwanted characters
     for i in mainP0:                                        
@@ -34,15 +34,15 @@ def jnt(first, second, third):
         holdText = re.sub("[-,.\"():]", "", holdText)
         pList.append(holdText.lower())
     # print(pList[0])
-    # for i in mainP1:
-    #     holdText = i.text
-    #     holdText = re.sub("[-,.\"():]", "", holdText)
-    #     pList.append(holdText.lower())
-    # # print(pList[0])
-    # for i in mainP2:
-    #     holdText = i.text
-    #     holdText = re.sub("[-,.\"():]", "", holdText)
-    #     pList.append(holdText.lower())
+    for i in mainP1:
+        holdText = i.text
+        holdText = re.sub("[-,.\"():]", "", holdText)
+        pList.append(holdText.lower())
+    # print(pList[0])
+    for i in mainP2:
+        holdText = i.text
+        holdText = re.sub("[-,.\"():]", "", holdText)
+        pList.append(holdText.lower())
     # print(pList[0])
 
     stopWordList = []                                                                     #get stop words list
@@ -88,6 +88,7 @@ def jnt(first, second, third):
     plt.savefig("Problem2\J&T\wordCount.svgz")
     plt.savefig("Problem2\J&T\wordCount.png")
     # plt.show()
+    plt.clf()
 
     posWordList = []                                                                        #get positive word from txt file
     pW = open("Problem2\positiveWord.txt")
@@ -134,6 +135,7 @@ def jnt(first, second, third):
     plt.savefig("Problem2\J&T\posWord.svgz")
     plt.savefig("Problem2\J&T\posWord.png")
     # plt.show()
+    plt.clf()
 
     xNW = np.array(negativeWord)                                                            #create negative word bar chart
     yNWV = np.array(negativeWordVal)
@@ -147,14 +149,19 @@ def jnt(first, second, third):
     plt.savefig("Problem2\J&T\\negWord.svgz")
     plt.savefig("Problem2\J&T\\negWord.png")
     # plt.show()
+    plt.clf()
 
+    print(positive)
+    print(negative)
     xPN = np.array(["Positive", "Negative"])                                                #positive vs negative word total bar chart
     yPNval = np.array([positive, negative])
     plt.title("Positive vs Negative")
     plt.ylabel("Frequency")
     plt.xlabel("Sentiment")
     plt.bar(xPN,yPNval)
+    plt.savefig("Problem2\J&T\posNeg.svgz")
     plt.savefig("Problem2\J&T\posNeg.png")
     # plt.show()
+    plt.clf()
 
 
