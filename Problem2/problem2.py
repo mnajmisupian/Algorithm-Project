@@ -27,7 +27,37 @@ def jnt(first, second, third):
     htmlParsed2 = BeautifulSoup(pageHtml2,"html.parser")
     mainParsed2 = htmlParsed2.find("div", attrs={"class" : "entry-content css-19a2kph"})
     mainP2 = mainParsed2.find_all("p")
-    
+
+    pList = pToList(mainP0, mainP1, mainP2)
+
+    stopWordList = stopWords()
+
+    wordList = paraToWords(pList, stopWordList)
+
+    wordDic = wordListToDic(wordList)
+
+    wordKeyList = list(wordDic.keys())                                                      #transfer word in the disctionary to list
+    wordValueList = []                                                                      #transfer word values(frequency) to list
+    for i in wordDic.values():                      
+        wordValueList.append(int(i))
+    # print(wordValueList)
+    # print(wordKeyList)
+
+    barChart(wordKeyList, wordValueList, "Word Frequency", "Frequency", "Word", 2, "Problem2\J&T\wordCount", 50, 50)
+
+    posWordList = posWords()
+
+    negWordList = negWords()
+
+    positiveWord,positiveWordVal,positive = posWordsNVal(posWordList, wordDic) 
+
+    negativeWord,negativeWordVal,negative = negWordsNVal(negWordList, wordDic)
+
+    barChart(positiveWord, positiveWordVal, "Positive Word Frequency", "Frequency", "Positive Word", 10, "Problem2\J&T\posWord", 20, 20)
+    barChart(negativeWord, negativeWordVal, "Negative Word Frequency", "Frequency", "Negative Word", 10, "Problem2\J&T\\negWord", 20, 20)
+    posVSnegBarChart(positive, negative, "Problem2\J&T\posNeg")
+
+def pToList(mainP0, mainP1, mainP2):
     pList = []                                                                              #change all <p> tag to string and replace all unwanted characters
     for i in mainP0:                                        
         holdText = i.text
@@ -44,7 +74,9 @@ def jnt(first, second, third):
         holdText = re.sub("[-,.\"():]", "", holdText)
         pList.append(holdText.lower())
     # print(pList[0])
+    return pList
 
+def stopWords():
     stopWordList = []                                                                     #get stop words list
     sW = open("Problem2\stopWord.txt")
     for line in sW:
@@ -53,7 +85,9 @@ def jnt(first, second, third):
     sW.close()
     # print(stopWordList)
     # print(len(stopWordList))
+    return stopWordList
 
+def paraToWords(pList, stopWordList):
     wordList = []                                                                           #filter stop word from the extracted paragraph
     for i in pList:
         holdSplit = i.split()
@@ -63,47 +97,49 @@ def jnt(first, second, third):
             # wordList.append(j)
     # print(wordList)
     # print(len(wordList))
+    return wordList
 
+def wordListToDic(wordList):
     wordDic = {}                                                                            #word frequency
     for i in wordList:
         wordDic.update({i : "{}".format(wordList.count(i))})
     # print(wordDic)
+    return wordDic
 
-    wordKeyList = list(wordDic.keys())                                                      #transfer word in the disctionary to list
-    wordValueList = []                                                                      #transfer word values(frequency) to list
-    for i in wordDic.values():                      
-        wordValueList.append(int(i))
-    # print(wordValueList)
-    # print(wordKeyList)
-
-    xKey = np.array(wordKeyList)                                                            #create word frequency bar chart
-    yVal = np.array(wordValueList)
-    plt.figure(figsize=(50,50))
-    plt.title("Word Frequency")
-    plt.ylabel("Frequency")
-    plt.xlabel("Word")
+def barChart(xList, yList, barTitle, yAxis, xAxis, sizeLabel, location, figX, figY):
+    x = np.array(xList)                                                            #create word frequency bar chart
+    y = np.array(yList)
+    plt.figure(figsize=(figX,figY))
+    plt.title(barTitle)
+    plt.ylabel(yAxis)
+    plt.xlabel(xAxis)
     plt.xticks(rotation=90)
-    plt.tick_params(axis='x', labelsize=2)
-    plt.bar(xKey,yVal)
-    plt.savefig("Problem2\J&T\wordCount.svgz")
-    plt.savefig("Problem2\J&T\wordCount.png")
+    plt.tick_params(axis='x', labelsize=sizeLabel)
+    plt.bar(x,y)
+    plt.savefig("{}.svgz".format(location))
+    plt.savefig("{}.png".format(location))
     # plt.show()
     plt.clf()
 
+def posWords():
     posWordList = []                                                                        #get positive word from txt file
     pW = open("Problem2\positiveWord.txt")
     for line in pW:
         line = line.replace("\n", "")
         posWordList.append(line)
     pW.close()
+    return posWordList
 
+def negWords():
     negWordList = []                                                                        #get negative word from txt file
     nW = open("Problem2\\negativeWord.txt")
     for line in nW:
         line = line.replace("\n", "")
         negWordList.append(line)
     nW.close()
+    return negWordList
 
+def posWordsNVal(posWordList, wordDic):
     positiveWord = []
     positiveWordVal = []
     positive = 0
@@ -112,7 +148,9 @@ def jnt(first, second, third):
             positive += int(wordDic.get(i))
             positiveWord.append(i)
             positiveWordVal.append(int(wordDic.get(i)))
+    return positiveWord,positiveWordVal,positive
 
+def negWordsNVal(negWordList, wordDic):
     negativeWord = []
     negativeWordVal = []
     negative = 0
@@ -121,47 +159,16 @@ def jnt(first, second, third):
             negative += int(wordDic.get(i))
             negativeWord.append(i)
             negativeWordVal.append(int(wordDic.get(i)))
-    # print(negativeWordVal)
+    return negativeWord,negativeWordVal,negative
 
-    xPW = np.array(positiveWord)                                                            #create positive word bar chart   
-    yPWV = np.array(positiveWordVal)
-    plt.figure(figsize=(20,20))
-    plt.title("Positive Word Frequency")
-    plt.ylabel("Frequency")
-    plt.xlabel("Positive Word")
-    plt.xticks(rotation=90)
-    plt.tick_params(axis='x', labelsize=5)
-    plt.bar(xPW,yPWV)
-    plt.savefig("Problem2\J&T\posWord.svgz")
-    plt.savefig("Problem2\J&T\posWord.png")
-    # plt.show()
-    plt.clf()
-
-    xNW = np.array(negativeWord)                                                            #create negative word bar chart
-    yNWV = np.array(negativeWordVal)
-    plt.figure(figsize=(20,20))
-    plt.title("Negative Word Frequency")
-    plt.ylabel("Frequency")
-    plt.xlabel("Negative Word")
-    plt.xticks(rotation=90)
-    plt.tick_params(axis='x', labelsize=5)
-    plt.bar(xNW,yNWV)
-    plt.savefig("Problem2\J&T\\negWord.svgz")
-    plt.savefig("Problem2\J&T\\negWord.png")
-    # plt.show()
-    plt.clf()
-
-    print(positive)
-    print(negative)
+def posVSnegBarChart(positive, negative, location):
     xPN = np.array(["Positive", "Negative"])                                                #positive vs negative word total bar chart
     yPNval = np.array([positive, negative])
     plt.title("Positive vs Negative")
     plt.ylabel("Frequency")
     plt.xlabel("Sentiment")
     plt.bar(xPN,yPNval)
-    plt.savefig("Problem2\J&T\posNeg.svgz")
-    plt.savefig("Problem2\J&T\posNeg.png")
+    plt.savefig("{}.svgz".format(location))
+    plt.savefig("{}.png".format(location))
     # plt.show()
     plt.clf()
-
-
