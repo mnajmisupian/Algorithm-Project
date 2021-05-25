@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 import matplotlib.pyplot as plt
 import numpy as np
-import re
+import re, string
 
 def jnt(first, second, third):
 
@@ -159,21 +159,126 @@ def posLaju(first, second, third):
     barChart(negativeWord, negativeWordVal, "Negative Word Frequency", "Frequency", "Negative Word", 20, "Problem2\PosLaju\\negWord", 20, 20)
     posVSnegBarChart(positive, negative, "Problem2\PosLaju\posNeg")
 
+def gdex(first, second, third):
+    url0 = Request(first, headers={"User-Agent": "Mozilla/5.0"})  # scraping
+    pageOpen0 = urlopen(url0)
+    pageHtml0 = pageOpen0.read().decode("utf-8")
+    htmlParsed0 = BeautifulSoup(pageHtml0, "html.parser")
+    mainParsed0 = htmlParsed0.find("div", attrs={"class": "field-item even", "property": "content:encoded"})
+    mainP0 = mainParsed0.find_all("p")
+
+    url1 = Request(second, headers={"User-Agent": "Mozilla/5.0"})
+    pageOpen1 = urlopen(url1)
+    pageHtml1 = pageOpen1.read().decode("utf-8")
+    htmlParsed1 = BeautifulSoup(pageHtml1, "html.parser")
+    mainParsed1 = htmlParsed1.find("div", attrs={"class": "field-item even", "property": "content:encoded"})
+    mainP1 = mainParsed1.find_all("p")
+
+    url2 = Request(third, headers={"User-Agent": "Mozilla/5.0"})
+    pageOpen2 = urlopen(url2)
+    pageHtml2 = pageOpen2.read().decode("utf-8")
+    htmlParsed2 = BeautifulSoup(pageHtml2, "html.parser")
+    mainParsed2 = htmlParsed2.find("div", attrs={"class": "field-item even", "property": "content:encoded"})
+    mainP2 = mainParsed2.find_all("p")
+    
+    pList = pToList(mainP0, mainP1, mainP2)
+
+    stopWordList = stopWords()
+
+    wordList = paraToWords(pList, stopWordList)
+
+    wordDic = wordListToDic(wordList)
+
+    wordKeyList = list(wordDic.keys())                                                      #transfer word in the disctionary to list
+    wordValueList = []                                                                      #transfer word values(frequency) to list
+    for i in wordDic.values():                      
+        wordValueList.append(int(i))
+    # print(wordValueList)
+    # print(wordKeyList)
+
+    barChart(wordKeyList, wordValueList, "Word Frequency", "Frequency", "Word", 8, "Problem2\GDEX\wordCount", 100, 100)
+
+    posWordList = posWords()
+
+    negWordList = negWords()
+
+    positiveWord,positiveWordVal,positive = posWordsNVal(posWordList, wordDic) 
+
+    negativeWord,negativeWordVal,negative = negWordsNVal(negWordList, wordDic)
+
+    barChart(positiveWord, positiveWordVal, "Positive Word Frequency", "Frequency", "Positive Word", 10, "Problem2\GDEX\posWord", 20, 20)
+    barChart(negativeWord, negativeWordVal, "Negative Word Frequency", "Frequency", "Negative Word", 20, "Problem2\GDEX\\negWord", 20, 20)
+    posVSnegBarChart(positive, negative, "Problem2\GDEX\posNeg")
+
+def dhl(first, second, third):
+    url0 = Request(first, headers={"User-Agent": "Mozilla/5.0"})  # scraping
+    pageOpen0 = urlopen(url0)
+    pageHtml0 = pageOpen0.read().decode("utf-8")
+    htmlParsed0 = BeautifulSoup(pageHtml0, "html.parser")
+    mainParsed0 = htmlParsed0.find("div", attrs={"class": "field-item even", "property": "content:encoded"})
+    mainP0 = mainParsed0.find_all("p")
+
+    url1 = Request(second, headers={"User-Agent": "Mozilla/5.0"})
+    pageOpen1 = urlopen(url1)
+    pageHtml1 = pageOpen1.read().decode("utf-8")
+    htmlParsed1 = BeautifulSoup(pageHtml1, "html.parser")
+    mainParsed1 = htmlParsed1.find("div", attrs={"class": "field-item even", "property": "content:encoded"})
+    mainP1 = mainParsed1.find_all("p")
+
+    url2 = Request(third, headers={"User-Agent": "Mozilla/5.0"})
+    pageOpen2 = urlopen(url2)
+    pageHtml2 = pageOpen2.read().decode("utf-8")
+    htmlParsed2 = BeautifulSoup(pageHtml2, "html.parser")
+    mainParsed2 = htmlParsed2.find("div", attrs={"class": "field-item even", "property": "content:encoded"})
+    mainP2 = mainParsed2.find_all("p")
+
+    pList = pToList(mainP0, mainP1, mainP2)
+
+    stopWordList = stopWords()
+
+    wordList = paraToWords(pList, stopWordList)
+
+    wordDic = wordListToDic(wordList)
+
+    wordKeyList = list(wordDic.keys())                                                      #transfer word in the disctionary to list
+    wordValueList = []                                                                      #transfer word values(frequency) to list
+    for i in wordDic.values():                      
+        wordValueList.append(int(i))
+    # print(wordValueList)
+    # print(wordKeyList)
+
+    barChart(wordKeyList, wordValueList, "Word Frequency", "Frequency", "Word", 7, "Problem2\DHL\wordCount", 150, 150)
+
+    posWordList = posWords()
+
+    negWordList = negWords()
+
+    positiveWord,positiveWordVal,positive = posWordsNVal(posWordList, wordDic) 
+
+    negativeWord,negativeWordVal,negative = negWordsNVal(negWordList, wordDic)
+
+    barChart(positiveWord, positiveWordVal, "Positive Word Frequency", "Frequency", "Positive Word", 10, "Problem2\DHL\posWord", 20, 20)
+    barChart(negativeWord, negativeWordVal, "Negative Word Frequency", "Frequency", "Negative Word", 20, "Problem2\DHL\\negWord", 20, 20)
+    posVSnegBarChart(positive, negative, "Problem2\DHL\posNeg")
+
 def pToList(mainP0, mainP1, mainP2):
     pList = []                                                                              #change all <p> tag to string and replace all unwanted characters
     for i in mainP0:                                        
         holdText = i.text
-        holdText = re.sub("[-,.\"():;“”‘’'—’?]", "", holdText)
+        # holdText = re.sub("^\W+", "", holdText)
+        holdText = re.sub("[\\%,–.\"-():;“”‘’'—’?\[\]-]", "", holdText)
         pList.append(holdText.lower())
     # print(pList[0])
     for i in mainP1:
         holdText = i.text
-        holdText = re.sub("[-,.\"():;“”‘’'—’?]", "", holdText)
+        # holdText = re.sub("^\W+", "", holdText)
+        holdText = re.sub("[\\%,–.\"():;“”‘’'—’?\[\]-]", "", holdText)
         pList.append(holdText.lower())
     # print(pList[0])
     for i in mainP2:
         holdText = i.text
-        holdText = re.sub("[-,.\"():;“”‘’'—’?]", "", holdText)
+        # holdText = re.sub("^\W+", "", holdText)
+        holdText = re.sub("[\\%,–.\"():;“”‘’'—’?\[\]-]", "", holdText)
         pList.append(holdText.lower())
     # print(pList[0])
     return pList
