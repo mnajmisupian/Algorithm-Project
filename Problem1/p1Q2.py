@@ -1,7 +1,7 @@
 import gmplot
 import googlemaps
 
-apikey = "AIzaSyAyPniwOWO5YfoLglfEovG02WngME4DE-I"
+apikey = ""
 gmapclient = googlemaps.Client(key=apikey)
 i = 3
 while i != 0:

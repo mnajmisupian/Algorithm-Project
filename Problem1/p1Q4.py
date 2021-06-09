@@ -9,7 +9,7 @@ from PIL import Image
 from io import BytesIO
 import matplotlib.pyplot as plt
 
-apikey = "AIzaSyAyPniwOWO5YfoLglfEovG02WngME4DE-I"
+apikey = ""
 gmapclient = googlemaps.Client(key=apikey)
 
 

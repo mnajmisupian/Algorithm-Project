@@ -6,7 +6,7 @@ from PIL import Image
 from io import BytesIO
 import matplotlib.pyplot as plt
 
-apikey = "AIzaSyAyPniwOWO5YfoLglfEovG02WngME4DE-I"
+apikey = ""
 base = (
     f"https://maps.googleapis.com/maps/api/staticmap?key={apikey}&size=640x640&scale=2&"
 )

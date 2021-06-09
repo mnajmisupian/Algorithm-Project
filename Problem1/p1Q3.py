@@ -37,7 +37,7 @@ def quickSort(arr, low, high):
 
 def main():
     global arrdistDic
-    apikey = "AIzaSyAyPniwOWO5YfoLglfEovG02WngME4DE-I"
+    apikey = ""
     gmapclient = googlemaps.Client(key=apikey)
 
     cityLE = (3.0319924887507144, 101.37344116244806)
