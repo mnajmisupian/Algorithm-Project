@@ -35,7 +35,7 @@ def jnt(first, second, third):
 
     stopWordList = stopWords()
 
-    wordList = paraToWords(pList, stopWordList)
+    wordList = paraToWords(pList, stopWordList)  # filtered stop words
 
     wordDic = wordListToDic(wordList)
 
@@ -89,6 +89,14 @@ def jnt(first, second, third):
         20,
     )
     posVSnegBarChart(positive, negative, "Problem2\J&T\posNeg")
+    posSent = positive / len(wordList)
+    negSent = negative / len(wordList)
+    overall = (posSent - negSent) / 3
+    if overall > 0:
+        sentiment = "positive"
+    elif overall < 0:
+        sentiment = "negative"
+    return overall
 
 
 def cityLink(first, second, third):
@@ -175,6 +183,14 @@ def cityLink(first, second, third):
         20,
     )
     posVSnegBarChart(positive, negative, "Problem2\CityLink\posNeg")
+    posSent = positive / len(wordList)
+    negSent = negative / len(wordList)
+    overall = (posSent - negSent) / 3
+    if overall > 0:
+        sentiment = "positive"
+    elif overall < 0:
+        sentiment = "negative"
+    return overall
 
 
 def posLaju(first, second, third):
@@ -259,6 +275,14 @@ def posLaju(first, second, third):
         20,
     )
     posVSnegBarChart(positive, negative, "Problem2\PosLaju\posNeg")
+    posSent = positive / len(wordList)
+    negSent = negative / len(wordList)
+    overall = (posSent - negSent) / 3
+    if overall > 0:
+        sentiment = "positive"
+    elif overall < 0:
+        sentiment = "negative"
+    return overall
 
 
 def gdex(first, second, third):
@@ -347,6 +371,14 @@ def gdex(first, second, third):
         20,
     )
     posVSnegBarChart(positive, negative, "Problem2\GDEX\posNeg")
+    posSent = positive / len(wordList)
+    negSent = negative / len(wordList)
+    overall = (posSent - negSent) / 3
+    if overall > 0:
+        sentiment = "positive"
+    elif overall < 0:
+        sentiment = "negative"
+    return overall
 
 
 def dhl(first, second, third):
@@ -435,6 +467,14 @@ def dhl(first, second, third):
         20,
     )
     posVSnegBarChart(positive, negative, "Problem2\DHL\posNeg")
+    posSent = positive / len(wordList)
+    negSent = negative / len(wordList)
+    overall = (posSent - negSent) / 3
+    if overall > 0:
+        sentiment = "positive"
+    elif overall < 0:
+        sentiment = "negative"
+    return overall
 
 
 def pToList(mainP0, mainP1, mainP2):
