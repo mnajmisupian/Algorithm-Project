@@ -1,13 +1,16 @@
 # from Problem2 import problem2dhl as P2
 from Problem2 import problem2 as P2
-
+from Problem1 import p1Q1 as P1q1
+# from Problem1 import p1Q2 as P1q2
+# from Problem1 import p1Q4 as P1q4
+import problem3 as P3
 # from Problem3 import problem3 as P3
 
 score = {}
 COURIER_NAME = ["cityLE", "posLaju", "gdex", "jnt", "dhl"]
 
 
-def main():
+def webScrape():
     global score
     score[COURIER_NAME[0]] = P2.cityLink(
         "http://autoworld.com.my/news/2020/09/25/city-link-express-takes-delivery-of-277-new-isuzu-trucks/",
@@ -38,3 +41,9 @@ def main():
         "https://www.theedgemarkets.com/article/dhl-predicts-strong-growth-b2b-ecommerce",
         "https://www.theedgemarkets.com/article/special-report-rocky-road-ahead-logistics-operators-amid-pandemic",
     )
+
+
+
+P1q1.start()
+# webScrape()
+# P3.start(score)
