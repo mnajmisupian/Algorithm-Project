@@ -1,7 +1,7 @@
 # from Problem2 import problem2dhl as P2
 from Problem2 import problem2 as P2
 from Problem1 import p1Q1 as P1q1
-# from Problem1 import p1Q2 as P1q2
+from Problem1 import p1Q2 as P1q2
 # from Problem1 import p1Q4 as P1q4
 import problem3 as P3
 # from Problem3 import problem3 as P3
@@ -45,5 +45,6 @@ def webScrape():
 
 
 P1q1.start()
+P1q2.start()
 # webScrape()
 # P3.start(score)
