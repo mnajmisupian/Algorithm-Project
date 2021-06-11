@@ -1,18 +1,30 @@
 from Problem1 import p1Q3 as P1
-import main as mainfile
 
-P1.main()  # import main method from problem 1 and run
-mainfile.main()  # import articles from main.py and run
-sentimentscore = mainfile.score  # import scores aqcuired from running main() in main.py
+# P1.main()  # import main method from problem 1 and run
+# mainfile.main()  # import articles from main.py and run
+# sentimentscore = mainfile.score  # import scores aqcuired from running main() in main.py
 
-# store dictionary of all distances of each customers in one variable
-DISTANCE = P1.gotop3()
+# # store dictionary of all distances of each customers in one variable
+# DISTANCE = P1.gotop3()
 
-# initialization of each couriers
-COURIER_NAME = ["cityLE", "posLaju", "gdex", "jnt", "dhl"]
+# # initialization of each couriers
+# COURIER_NAME = ["cityLE", "posLaju", "gdex", "jnt", "dhl"]
 
+def start(score):
+    P1.main()  # import main method from problem 1 and run
+    # mainfile.main()  # import articles from main.py and run
+    sentimentscore = score  # import scores aqcuired from running main() in main.py
 
-def update_dict():
+    # store dictionary of all distances of each customers in one variable
+    DISTANCE = P1.gotop3()
+
+    # initialization of each couriers
+    COURIER_NAME = ["cityLE", "posLaju", "gdex", "jnt", "dhl"]
+    DISTANCE = update_dict(DISTANCE, COURIER_NAME)  # update dictionary
+    DISTANCE = update_dict_choice(DISTANCE, COURIER_NAME, sentimentscore)  # update dictionary distance times sentiment score
+    DISTANCE = sort_dict(DISTANCE, COURIER_NAME)
+
+def update_dict(DISTANCE, COURIER_NAME):
     distance_copy = DISTANCE.copy()  # create a copy of all distances
     for keys in distance_copy.keys():
         courier_dict = distance_copy[keys]
@@ -27,7 +39,7 @@ def update_dict():
     return distance_copy
 
 
-def calculate_score(dictionary, customer_index, courier_index):
+def calculate_score(dictionary, customer_index, courier_index, COURIER_NAME, sentimentscore):
     score = (
         (dictionary[customer_index])[COURIER_NAME[courier_index]]
         * sentimentscore[COURIER_NAME[courier_index]]
@@ -36,16 +48,16 @@ def calculate_score(dictionary, customer_index, courier_index):
     return score
 
 
-def update_dict_choice():
+def update_dict_choice(DISTANCE, COURIER_NAME, sentimentscore):
     distance_copy = DISTANCE.copy()
     for keys in distance_copy.keys():
         courier_dict = distance_copy[keys]
         for i in range(0, len(courier_dict)):
-            courier_dict[COURIER_NAME[i]] = calculate_score(distance_copy, keys, i)
+            courier_dict[COURIER_NAME[i]] = calculate_score(distance_copy, keys, i, COURIER_NAME, sentimentscore)
     return distance_copy
 
 
-def sort_dict():
+def sort_dict(DISTANCE, COURIER_NAME):
     distance_copy = DISTANCE.copy()
     placeholder = 0
     bestCourier = None
@@ -60,6 +72,6 @@ def sort_dict():
         print("Best courier for customer " + str(keys) + " is " + bestCourier)
 
 
-DISTANCE = update_dict()  # update dictionary
-DISTANCE = update_dict_choice()  # update dictionary distance times sentiment score
-DISTANCE = sort_dict()  # sort and print best courier for each customers
+# DISTANCE = update_dict()  # update dictionary
+# DISTANCE = update_dict_choice()  # update dictionary distance times sentiment score
+# DISTANCE = sort_dict()  # sort and print best courier for each customers
