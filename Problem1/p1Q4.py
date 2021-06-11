@@ -25,7 +25,8 @@ def showImageFromUrl(url, name="map"):
     plt.axis("off")
     plt.imshow(img)
     plt.savefig(f"{name}.png")
-    plt.show()
+    # plt.show()
+    plt.clf()
 
 
 cityLE = (3.0319924887507144, 101.37344116244806)
@@ -75,79 +76,80 @@ def quickSort(arr, low, high):
         quickSort(arr, low, pi - 1)
         quickSort(arr, pi + 1, high)
 
+def start():
 
-courier = [cityLE, posLaju, gdex, jnt, dhl]
-courierName = ["City-link Express", "Poslaju", "GDex", "J&T", "DHL"]
-origin = [Rawang, SubangJaya, Ampang]
-originName = ["Rawang", "SubangJaya", "Ampang"]
-destination = [BukitJelutong, PuncakAlam, Cyberjaya]
-destinationName = ["BukitJelutong", "PuncakAlam", "Cyberjaya"]
-distance = []
-polylines = {}
-
-
-j = 0
-while j < 3:
-    print(f"customer {j+1}")
-    i = 0
-    while i != 5:
-        hub = courier[i]
-        name = courierName[i]
-        originPoint = origin[j]
-        destinationPoint = destination[j]
-        d_goog = gmapclient.directions(originPoint, hub, mode="driving")
-        d_goog2 = gmapclient.directions(hub, destinationPoint, mode="driving")
-        new_d = d_goog[0]["legs"][0]["distance"]["value"]
-        new_d2 = d_goog2[0]["legs"][0]["distance"]["value"]
-
-        poly1 = d_goog[0]["overview_polyline"]["points"]
-        poly2 = d_goog2[0]["overview_polyline"]["points"]
-
-        print(
-            f"Driving distance from {originName[j]} -> {name} ->{destinationName[j]} :"
-        )
-        distance.append(new_d + new_d2)
-
-        # Adding the two polyline into a python dict
-        polylines[new_d + new_d2] = [poly1, poly2]
-
-        print((distance[i] / 1000), "km")
-        i = i + 1
-
-    print(distance)
-    sortedDistance = distance.copy()
-    n = len(sortedDistance)
-
-    quickSort(sortedDistance, 0, n - 1)
-    print(sortedDistance)
-    index = distance.index(sortedDistance[0])
-    print(distance.index(sortedDistance[0]))
-    shortestDistance = distance[index]
-    print(
-        f"The shortest distance is using {courierName[index]} with distance of {shortestDistance/ 1000} km"
-    )
-    print()
-
-    # Forming polyline, documentation is at https://developers.google.com/maps/documentation/maps-static/start#Paths
-    requestUrl = base
-
-    # Appending BEFORE route to request
-    d_goog3 = gmapclient.directions(originPoint, destinationPoint, mode="driving")
-    poly3 = d_goog[0]["overview_polyline"]["points"]
-    requestUrl += f"&path=weight:3%7Ccolor:0x0000ff80%7Cenc:{poly3}"
-
-    # Appending AFTER route to request
-    shortest_poly = polylines[
-        shortestDistance
-    ]  # Retrieve back the two polylines that make up the shortest route
-    requestUrl += f"&path=weight:3%7Ccolor:0xff000080%7Cenc:{shortest_poly[0]}"
-    requestUrl += f"&path=weight:3%7Ccolor:0xff000080%7Cenc:{shortest_poly[1]}"
-
-    # Show map of before and after
-    print(f"Showing map of before (blue) and after (red)")
-    showImageFromUrl(requestUrl, name=f"map_customer{j+1}")
-
-    print()
+    courier = [cityLE, posLaju, gdex, jnt, dhl]
+    courierName = ["City-link Express", "Poslaju", "GDex", "J&T", "DHL"]
+    origin = [Rawang, SubangJaya, Ampang]
+    originName = ["Rawang", "SubangJaya", "Ampang"]
+    destination = [BukitJelutong, PuncakAlam, Cyberjaya]
+    destinationName = ["BukitJelutong", "PuncakAlam", "Cyberjaya"]
     distance = []
     polylines = {}
-    j = j + 1
+
+
+    j = 0
+    while j < 3:
+        print(f"customer {j+1}")
+        i = 0
+        while i != 5:
+            hub = courier[i]
+            name = courierName[i]
+            originPoint = origin[j]
+            destinationPoint = destination[j]
+            d_goog = gmapclient.directions(originPoint, hub, mode="driving")
+            d_goog2 = gmapclient.directions(hub, destinationPoint, mode="driving")
+            new_d = d_goog[0]["legs"][0]["distance"]["value"]
+            new_d2 = d_goog2[0]["legs"][0]["distance"]["value"]
+
+            poly1 = d_goog[0]["overview_polyline"]["points"]
+            poly2 = d_goog2[0]["overview_polyline"]["points"]
+
+            print(
+                f"Driving distance from {originName[j]} -> {name} ->{destinationName[j]} :"
+            )
+            distance.append(new_d + new_d2)
+
+            # Adding the two polyline into a python dict
+            polylines[new_d + new_d2] = [poly1, poly2]
+
+            print((distance[i] / 1000), "km")
+            i = i + 1
+
+        print(distance)
+        sortedDistance = distance.copy()
+        n = len(sortedDistance)
+
+        quickSort(sortedDistance, 0, n - 1)
+        print(sortedDistance)
+        index = distance.index(sortedDistance[0])
+        print(distance.index(sortedDistance[0]))
+        shortestDistance = distance[index]
+        print(
+            f"The shortest distance is using {courierName[index]} with distance of {shortestDistance/ 1000} km"
+        )
+        print()
+
+        # Forming polyline, documentation is at https://developers.google.com/maps/documentation/maps-static/start#Paths
+        requestUrl = base
+
+        # Appending BEFORE route to request
+        d_goog3 = gmapclient.directions(originPoint, destinationPoint, mode="driving")
+        poly3 = d_goog[0]["overview_polyline"]["points"]
+        requestUrl += f"&path=weight:3%7Ccolor:0x0000ff80%7Cenc:{poly3}"
+
+        # Appending AFTER route to request
+        shortest_poly = polylines[
+            shortestDistance
+        ]  # Retrieve back the two polylines that make up the shortest route
+        requestUrl += f"&path=weight:3%7Ccolor:0xff000080%7Cenc:{shortest_poly[0]}"
+        requestUrl += f"&path=weight:3%7Ccolor:0xff000080%7Cenc:{shortest_poly[1]}"
+
+        # Show map of before and after
+        print(f"Showing map of before (blue) and after (red)")
+        showImageFromUrl(requestUrl, name=f"map_customer{j+1}")
+
+        print()
+        distance = []
+        polylines = {}
+        j = j + 1
